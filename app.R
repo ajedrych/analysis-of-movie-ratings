@@ -4,7 +4,6 @@ library(ggplot2)
 library(DT)
 
 load(url("https://stat.duke.edu/~mc301/data/movies.Rdata"))
-source(file = names.R)
 
 ui <- fluidPage(
   titlePanel("Movies ratings analysis"),
@@ -12,13 +11,6 @@ ui <- fluidPage(
   sidebarLayout(
 
     sidebarPanel(
-      selectInput("x", "X-axis",
-        c("runtime", "IMDB rating", "iIMDB - number of votes", "critics score", "audience score"),
-        selected = "runtime"),
-
-      selectInput("y", "Y-axis",
-        c("runtime", "IMDB rating", "IMDB - number of votes", "critics score", "audience score"),
-        selected = "IMBD rating"),
 
       selectInput("title_type", "Type",
         c("Documentary", "Feature Film", "TV Movie")),
@@ -33,20 +25,25 @@ ui <- fluidPage(
 
       sliderInput("runtime", "Length",65,267, value = c(65,267), step = 1),
 
+      selectInput("x", "X-axis",
+        c("runtime", "imdb_rating", "imdb_num_votes", "critics_score", "audience_score"),
+        selected = "runtime"),
 
+      selectInput("y", "Y-axis",
+        c("runtime", "imdb_rating", "imdb_num_votes", "critics_score", "audience_score"),
+        selected = "imdb_rating")
     ),
+
     # Output --------------------------------------------------------
     mainPanel(
-
-      # Show scatterplot --------------------------------------------
-      plotOutput(outputId = "scatterplot"),
-
-      # Show data table ---------------------------------------------
-      DT::dataTableOutput(outputId = "moviestable")
+      tabsetPanel(
+            tabPanel('Plot', plotOutput("scatterplot"),
+            tabPanel( "Table", dataTableOutput("moviestable"))
+        )
     )
   )
 )
-
+)
 # Define server function required to create the scatterplot ---------
 server <- function(input, output) {
 
@@ -57,8 +54,8 @@ server <- function(input, output) {
   })
 
   # Print data table if checked -------------------------------------
-  output$moviestable <- DT::renderDataTable({
-    DT::datatable(data = movies[, 1:4],
+  output$moviestable <- renderDataTable({
+    datatable(data = movies[, 1:4],
                   options = list(pageLength = 10),
                   rownames = FALSE)
   })
