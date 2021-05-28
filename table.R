@@ -16,4 +16,3 @@ movies$critics_rating <- NULL
 movies$audience_rating <- NULL
 
 
-

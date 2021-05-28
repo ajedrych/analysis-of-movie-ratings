@@ -69,8 +69,10 @@ server <- function(input, output) {
   #Create scatterplot using ggplot library
   output$scatterplot <- renderPlot({
     ggplot(m, aes_string(x = input$x, y = input$y)) +
-    geom_point()
+      geom_point() +
+      stat_smooth(method = lm, col = "red")
   })
+
 
   #Apply filters for release year and runtime
   m <- movies %>%
