@@ -1,7 +1,7 @@
 # modelR
- 
--> add tooltip to scatterplot br()
--> table -> delete unnecessary columns br()
-         -> change colnames br()
--> tab for code and github url
+ To do:
+
+- add tooltip to scatterplot
+- table: delete unnecessary columns, change colnames
+- tab for code and github url
  
