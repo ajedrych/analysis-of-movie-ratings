@@ -1,4 +1,4 @@
-# Movie rating analysis
+**#Analysis of movie ratings**
  To do:
 
 - add tooltip to scatterplot
