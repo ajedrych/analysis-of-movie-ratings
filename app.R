@@ -8,22 +8,22 @@ library(dbplyr)
 library(dplyr)
 library(ggvis)
 
-#Loading data from URL
+#Load data from URL
 load(url("https://stat.duke.edu/~mc301/data/movies.Rdata"))
 
-#Removing rows with missing values from table
+#Remove rows with missing values from table
 drop_na(data = movies)
 
-#User interface
+#Define user interface
 ui <- fluidPage(
 
   #Title
   titlePanel("Analysis of movie ratings"),
 
-  #Creating tabs
+  #Create tabs
   tabsetPanel(
 
-          #Tab1 - displaying scatterplot with reactive elements
+          #Tab1 - display scatterplot with reactive elements
            tabPanel("Plot",
                     sidebarLayout(
                       sidebarPanel(
@@ -50,27 +50,29 @@ ui <- fluidPage(
                     )
            ),
 
-           #Tab2 - dispalying data table
+           #Tab2 - display data table
            tabPanel("Data", dataTableOutput("moviestable"))
 
   )
 )
 
-# Define server function required to create the scatterplot ---------
+# Define server function
 server <- function(input, output) {
 
+  #Filter movies for properly working of scatterplot
   movies_a <- reactive({
-    minyear <- input$thtr_rel_year[1]
+    minyear <- input$thtr_rel_year [1]
     maxyear <- input$thtr_rel_year[2]
     minruntime <- input$runtime[1]
     maxruntime <- input$runtime[2]
 
-  # Create scatterplot object the plotOutput function is expecting --
+  #Create scatterplot using ggplot library
   output$scatterplot <- renderPlot({
     ggplot(m, aes_string(x = input$x, y = input$y)) +
     geom_point()
   })
 
+  #Apply filters for release year and runtime
   m <- movies %>%
       filter(
         thtr_rel_year >= minyear,
@@ -80,6 +82,7 @@ server <- function(input, output) {
       ) %>%
     arrange(runtime)
 
+    #Apply filer for genre
     if (input$genre != "All") {
       genre <- paste0(input$genre)
       m <- m %>% filter(genre %like% genre)
@@ -88,11 +91,14 @@ server <- function(input, output) {
     m <- as.data.frame(m)
  })
 
-  # Print data table if checked -------------------------------------)
+source("table.R", local = FALSE)
+
+  #Print data table
   output$moviestable <- renderDataTable({
-    datatable(data = movies_table,
-                  options = list(pageLength = 10),
-                  rownames = FALSE)
+    datatable(data = movies,
+              options = list(pageLength = 10),
+              rownames = FALSE,
+              class = "cell-border stripe")
   })
 
    output$n_movies <- renderText({ nrow(movies_a()) })
