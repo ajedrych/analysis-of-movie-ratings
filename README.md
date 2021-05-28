@@ -1,4 +1,4 @@
-# modelR
+# Movie rating analysis
  To do:
 
 - add tooltip to scatterplot
