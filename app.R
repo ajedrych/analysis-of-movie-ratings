@@ -7,6 +7,7 @@ library(RSQLite)
 library(dbplyr)
 library(dplyr)
 library(ggvis)
+library(plotly)
 
 #Load data from URL
 load(url("https://stat.duke.edu/~mc301/data/movies.Rdata"))
@@ -52,7 +53,6 @@ ui <- fluidPage(
 
            #Tab2 - display data table
            tabPanel("Data", dataTableOutput("moviestable"))
-
   )
 )
 
@@ -66,16 +66,15 @@ server <- function(input, output) {
     minruntime <- input$runtime[1]
     maxruntime <- input$runtime[2]
 
-  #Create scatterplot using ggplot library
-  output$scatterplot <- renderPlot({
+    #Create scatterplot using ggplot library
+    output$scatterplot <- renderPlot({
     ggplot(m, aes_string(x = input$x, y = input$y)) +
       geom_point() +
       stat_smooth(method = lm, col = "red")
   })
 
-
-  #Apply filters for release year and runtime
-  m <- movies %>%
+    # Apply filters for release year and runtime
+    m <- movies %>%
       filter(
         thtr_rel_year >= minyear,
         thtr_rel_year <= maxyear,
@@ -93,7 +92,7 @@ server <- function(input, output) {
     m <- as.data.frame(m)
  })
 
-source("table.R", local = FALSE)
+ source("table.R", local = FALSE)
 
   #Print data table
   output$moviestable <- renderDataTable({
