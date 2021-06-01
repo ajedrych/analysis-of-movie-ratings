@@ -4,13 +4,10 @@ library(tidyr)
 library(ggplot2)
 library(DT)
 library(dplyr)
-# library(rsconnect)
-#
-# rsconnect::setAccountInfo(name='aleksandrajedrych', token='D3EEF9C2916E58C92CCCC0A7CAB42D5D', secret='ng5ipKIro/HrQPbTVol9YVi86LPgzs9XlGxSgV+B')
-# deployApp()
+library(rsconnect)
 
 #Load data from URL
-load("C:/Users/aleks/PycharmProjects/modelR/movies.Rdata")
+load("movies.Rdata")
 
 #Remove rows with missing values from table
 drop_na(data = movies)
@@ -33,7 +30,7 @@ ui <- fluidPage(
 
                         sliderInput("thtr_rel_year", "Release year", 1970, 2014, value = c(1970,2014), step = 1, round = TRUE, sep=""),
 
-                        sliderInput("runtime", "Movie length",65,267, value = c(39,267), step = 1, round = TRUE, sep=""),
+                        sliderInput("runtime", "Movie length",39,267, value = c(39,267), step = 1, round = TRUE, sep=""),
 
                         selectInput("x", "X-axis",
                                     c("runtime", "imdb_rating", "imdb_num_votes", "critics_score", "audience_score"),
@@ -84,8 +81,22 @@ server <- function(input, output) {
 
  })
 
-  #Load file which delete unnecesarry columns in dataset
- source("C:/Users/aleks/PycharmProjects/modelR/table.R", local = FALSE)
+  #Delete unnecessary columns
+  movies$title_type <- NULL
+  movies$mpaa_rating <- NULL
+  movies$thtr_rel_month <- NULL
+  movies$thtr_rel_day <- NULL
+  movies$dvd_rel_day <- NULL
+  movies$dvd_rel_month <- NULL
+  movies$dvd_rel_year <- NULL
+  movies$best_pic_nom <- NULL
+  movies$best_pic_win <- NULL
+  movies$best_actor_win <- NULL
+  movies$best_actress_win <- NULL
+  movies$best_dir_win <- NULL
+  movies$top200_box <- NULL
+  movies$critics_rating <- NULL
+  movies$audience_rating <- NULL
 
   #Print data table
   output$moviestable <- renderDataTable({
