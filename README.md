@@ -3,6 +3,7 @@
 
 This app use data set [movie.RData](https://stat.duke.edu/~mc301/data/movies.Rdata). 
 
+### Install
 To run it locally, you will need to install packages:
 
 <code>
