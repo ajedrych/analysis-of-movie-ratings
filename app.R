@@ -3,11 +3,8 @@ library(shiny)
 library(tidyr)
 library(ggplot2)
 library(DT)
-library(RSQLite)
 library(dbplyr)
 library(dplyr)
-library(ggvis)
-library(plotly)
 library(data.table)
 
 #Load data from URL
@@ -27,7 +24,9 @@ ui <- fluidPage(
 
           #Tab1 - display scatterplot with reactive elements
            tabPanel("Plot",
+
                     sidebarLayout(
+
                       sidebarPanel(
 
                         selectInput("genre", "Genre",
@@ -89,11 +88,9 @@ server <- function(input, output) {
       genre <- paste0(input$genre)
       m <- m %>% filter(genre %like% genre)
     }
-
-    m <- as.data.frame(m)
-
  })
 
+  #Load file which delete unnecesarry columns in dataset
  source("table.R", local = FALSE)
 
   #Print data table
@@ -104,7 +101,9 @@ server <- function(input, output) {
               class = "cell-border stripe")
   })
 
-   output$n_movies <- renderText({ nrow(movies_a()) })
+  #Print number of movies
+  output$n_movies <- renderText({ nrow(movies_a()) })
 }
 
+#ShinyApp
 shinyApp(ui = ui, server = server)
