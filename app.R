@@ -48,7 +48,11 @@ ui <- fluidPage(
            ),
 
            #Tab2 - display data table
-           tabPanel("Data", dataTableOutput("moviestable"))
+           tabPanel("Data", dataTableOutput("moviestable")),
+
+           tabPanel("Documentation",
+                    p("Author: Aleksandra Jedrych"), br(),
+                    a(href = "https://github.com/ajedrych", "GitHub"))
   )
 )
 
