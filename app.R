@@ -8,6 +8,7 @@ library(dbplyr)
 library(dplyr)
 library(ggvis)
 library(plotly)
+library(data.table)
 
 #Load data from URL
 load(url("https://stat.duke.edu/~mc301/data/movies.Rdata"))
@@ -70,7 +71,7 @@ server <- function(input, output) {
     output$scatterplot <- renderPlot({
     ggplot(m, aes_string(x = input$x, y = input$y)) +
       geom_point() +
-      stat_smooth(method = lm, col = "red")
+      stat_smooth(method = glm, col = "red")
   })
 
     # Apply filters for release year and runtime
@@ -90,6 +91,7 @@ server <- function(input, output) {
     }
 
     m <- as.data.frame(m)
+
  })
 
  source("table.R", local = FALSE)
