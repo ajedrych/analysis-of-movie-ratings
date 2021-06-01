@@ -3,12 +3,14 @@ library(shiny)
 library(tidyr)
 library(ggplot2)
 library(DT)
-library(dbplyr)
 library(dplyr)
-library(data.table)
+# library(rsconnect)
+#
+# rsconnect::setAccountInfo(name='aleksandrajedrych', token='D3EEF9C2916E58C92CCCC0A7CAB42D5D', secret='ng5ipKIro/HrQPbTVol9YVi86LPgzs9XlGxSgV+B')
+# deployApp()
 
 #Load data from URL
-load(url("https://stat.duke.edu/~mc301/data/movies.Rdata"))
+load("C:/Users/aleks/PycharmProjects/modelR/movies.Rdata")
 
 #Remove rows with missing values from table
 drop_na(data = movies)
@@ -29,12 +31,9 @@ ui <- fluidPage(
 
                       sidebarPanel(
 
-                        selectInput("genre", "Genre",
-                                    c("All", "Action", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary", "Drama", "Family", "Fantasy", "History", "Horror", "Music", "Musical", "Mystery", "Romance", "Sci-Fi", "Short", "Sport", "Thriller", "War", "Western")),
-
                         sliderInput("thtr_rel_year", "Release year", 1970, 2014, value = c(1970,2014), step = 1, round = TRUE, sep=""),
 
-                        sliderInput("runtime", "Movie length",65,267, value = c(65,267), step = 1, round = TRUE, sep=""),
+                        sliderInput("runtime", "Movie length",65,267, value = c(39,267), step = 1, round = TRUE, sep=""),
 
                         selectInput("x", "X-axis",
                                     c("runtime", "imdb_rating", "imdb_num_votes", "critics_score", "audience_score"),
@@ -83,15 +82,10 @@ server <- function(input, output) {
       ) %>%
     arrange(runtime)
 
-    #Apply filer for genre
-    if (input$genre != "All") {
-      genre <- paste0(input$genre)
-      m <- m %>% filter(genre %like% genre)
-    }
  })
 
   #Load file which delete unnecesarry columns in dataset
- source("table.R", local = FALSE)
+ source("C:/Users/aleks/PycharmProjects/modelR/table.R", local = FALSE)
 
   #Print data table
   output$moviestable <- renderDataTable({
@@ -102,7 +96,9 @@ server <- function(input, output) {
   })
 
   #Print number of movies
-  output$n_movies <- renderText({ nrow(movies_a()) })
+  output$n_movies <- renderText({
+      nrow(movies_a())
+  })
 }
 
 #ShinyApp
