@@ -5,6 +5,9 @@ library(ggplot2)
 library(DT)
 library(dplyr)
 library(rsconnect)
+library(shinythemes)
+
+
 
 #Load data from URL
 load("movies.Rdata")
@@ -13,7 +16,7 @@ load("movies.Rdata")
 drop_na(data = movies)
 
 #Define user interface
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("spacelab"),
 
   #Title
   titlePanel("Analysis of movie ratings"),
