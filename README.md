@@ -14,6 +14,6 @@ install.packages(c('shiny', 'tidyr', 'ggplot2', 'DT', 'dplyr'))
 Application was made as a course credit project.
 
 *Faculty of Economic Sciences, University of Warsaw,
-Projektowanie Systemów Informatycznych, 2021* 
+Projektowanie Systemów Informatycznych, June 2021* 
 
 [@ajedrych](https://github.com/ajedrych)
